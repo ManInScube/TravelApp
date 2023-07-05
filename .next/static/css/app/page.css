@@ -1,3 +1,47 @@
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[3].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[3].oneOf[12].use[3]!./node_modules/@reach/combobox/styles.css ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+:root {
+	--reach-combobox: 1;
+}
+
+[data-reach-combobox-popover] {
+	border: solid 1px hsla(0, 0%, 0%, 0.25);
+	background: hsla(0, 100%, 100%, 0.99);
+	font-size: 85%;
+}
+
+[data-reach-combobox-list] {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+}
+
+[data-reach-combobox-option] {
+	cursor: pointer;
+	margin: 0;
+	padding: 0.25rem 0.5rem;
+}
+
+[data-reach-combobox-option][aria-selected="true"] {
+	background: hsl(211, 10%, 95%);
+}
+
+[data-reach-combobox-option]:hover {
+	background: hsl(211, 10%, 92%);
+}
+
+[data-reach-combobox-option][aria-selected="true"]:hover {
+	background: hsl(211, 10%, 90%);
+}
+
+[data-suggested-value] {
+	font-weight: bold;
+}
+
 /*!**********************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[3].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[3].oneOf[12].use[3]!./app/styles.css ***!
   \**********************************************************************************************************************************************************************************************************************************************************/

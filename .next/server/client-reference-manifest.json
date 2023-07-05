@@ -253,17 +253,18 @@
     }
   },
   "entryCSSFiles": {
+    "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\layout": {
+      "modules": [],
+      "files": []
+    },
     "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\page": {
       "modules": [
-        "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\styles.css"
+        "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\styles.css",
+        "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\node_modules\\@reach\\combobox\\styles.css"
       ],
       "files": [
         "static/css/app/page.css"
       ]
-    },
-    "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\layout": {
-      "modules": [],
-      "files": []
     }
   }
 }

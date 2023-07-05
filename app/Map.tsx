@@ -1,55 +1,57 @@
 'use client'
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import {useEffect, useState} from 'react';
+
+import usePlacesAutocomplete from "use-places-autocomplete";
+import PlaceSearch from "./PlaceSearch";
+
 
 export default function Map(){
-//     // Initialize and add the map
-// let map;
-// async function initMap(): Promise<void> {
-//   // The location of Uluru
-//   const position = { lat: -25.344, lng: 131.031 };
+    const [centerMap, setCenterMap] = useState<LatLngLiteral>({lat:0, lng:0});
 
-//   // Request needed libraries.
-//   //@ts-ignore
-//   const { GooleMap } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
-//   const { AdvancedMarkerView } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+    const [markers, setMarkers] = useState<LatLngLiteral[]>([
+            {lat:54.702800971968976, lng: 20.74240559049013},
+            {lat:54.66514866433478, lng:21.81557985296381}]
+            );
 
-//   // The map, centered at Uluru
-//   map = new GooleMap(
-//     document.getElementById('map') as HTMLElement,
-//     {
-//       zoom: 4,
-//       center: position,
-//       mapId: 'DEMO_MAP_ID',
-//     }
-//   );
+    type LatLngLiteral = google.maps.LatLngLiteral;    
 
-//   // The marker, positioned at Uluru
-//   const marker = new AdvancedMarkerView({
-//     map: map,
-//     position: position,
-//     title: 'Uluru'
-//   });
-// }
-
-// initMap()
-
-    let markers = [];
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: "AIzaSyDwz43Woz_Flwh0o4pg2AEuVQBy1uJBLi8",
+        libraries: ["places"]
     });
 
     if(!isLoaded) return <div>Loading...</div>;
     return <MapLocal/>
+
+    useEffect(()=>{
+        CalcCenter();
+    }, [])
+
+    function CalcCenter(){
+        let lat = (markers[0].lat + markers[1].lat[1]) / markers.length;
+        let lng = (markers[0].lng + markers[1].lng[1]) / markers.length;
+        setCenterMap({lat, lng});
+    }
   
     function MapLocal(){
         return (
-        <GoogleMap
-            zoom={10}
-            center={{lat:44, lng:-80}}
-            mapContainerClassName="map-container"
-        >
-            
-        </GoogleMap>
+        <>
+            <div>
+                <PlaceSearch />
+            </div>
+            <GoogleMap
+                zoom={10}
+                center={centerMap}
+                mapContainerClassName="map-container"
+            >
+                {markers.map((marker)=><Marker position={marker}/>)}
+            </GoogleMap>
+        </>
         )
+    }
+
+    const PlacesAutocomplete = () => {
+
     }
 }
