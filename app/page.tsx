@@ -7,7 +7,7 @@ export default function Page() {
     return (
         <>
             <NavBar />
-            <Map />
+            <Map  />
             
         </>
 
