@@ -8,9 +8,9 @@ import PlaceSearch from "./PlaceSearch";
 type DerectionResult = google.maps.DirectionsResult;
 
 export default function Map(){
-    const [centerMap, setCenterMap] = useState<LatLngLiteral>({lat:0, lng:0});
+    const [centerMap, setCenterMap] = useState<LatLngLiteral>({lat:54.702800971968976, lng: 20.74240559049013});
     const [office, setOffice] = useState<LatLngLiteral>();
-    const [currentPoint, setCurrentPoint] = useState<LatLngLiteral>({lat:0, lng:0});
+    const [currentPoint, setCurrentPoint] = useState<LatLngLiteral>({lat:54.702800971968976, lng: 20.74240559049013});
     const [destination, setDestination] = useState<DerectionResult>();
 
     const [markers, setMarkers] = useState<LatLngLiteral[]>([
@@ -18,10 +18,10 @@ export default function Map(){
             {lat:54.66514866433478, lng:21.81557985296381}]
             );
     
-            useEffect(()=>{
-                //CalcCenter();
-                buildRoute;
-            }, [destination])
+            // useEffect(()=>{
+            //     //CalcCenter();
+            //     buildRoute;
+            // }, [destination])
     
     const mapRef = useRef<GoogleMap>();
 
@@ -29,7 +29,7 @@ export default function Map(){
 
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: "AIzaSyDwz43Woz_Flwh0o4pg2AEuVQBy1uJBLi8",
-        libraries: ["places"]
+        libraries: ["places"],
     });
 
     if(!isLoaded) return <div>Loading...</div>;
@@ -47,12 +47,17 @@ export default function Map(){
 
     //TODO: add transit points / TravelMode.TRANSIT
     
-    function buildRoute (destination: LatLngLiteral) {
+    async function buildRoute () {
+        console.log("before");
+
+        //if(!destination) return;
+        
+        console.log("after");
         const dirService = new google.maps.DirectionsService();
 
         //TODO: if markers > 1
 
-        dirService.route(
+        await dirService.route(
             {
                 origin: markers[1],
                 destination: markers[0],
@@ -69,7 +74,7 @@ export default function Map(){
 
     function addPlace(val){
         setMarkers([...markers, val]);
-        //buildRoute(val);
+        buildRoute();
     }
 
     function MapLocal(){
