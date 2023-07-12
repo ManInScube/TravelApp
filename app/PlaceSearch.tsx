@@ -10,6 +10,7 @@ import {
   import "@reach/combobox/styles.css";
 
 
+
 export default function PlaceSearch({addPlace, setOffice}){
 
     const {
@@ -47,6 +48,7 @@ export default function PlaceSearch({addPlace, setOffice}){
                     </ComboboxList>
                 </ComboboxPopover>
             </Combobox>
+
         </>
     )
 }

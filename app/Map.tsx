@@ -4,14 +4,17 @@ import {useEffect, useRef, useState} from 'react';
 
 import usePlacesAutocomplete from "use-places-autocomplete";
 import PlaceSearch from "./PlaceSearch";
+import { Input } from "@mui/material";
 
-type DerectionResult = google.maps.DirectionsResult;
+type DirectionResult = google.maps.DirectionsResult;
+type DirectionWaypoint = google.maps.DirectionsWaypoint;
 
 export default function Map(){
     const [centerMap, setCenterMap] = useState<LatLngLiteral>({lat:54.702800971968976, lng: 20.74240559049013});
     const [office, setOffice] = useState<LatLngLiteral>();
     const [currentPoint, setCurrentPoint] = useState<LatLngLiteral>({lat:54.702800971968976, lng: 20.74240559049013});
-    const [destination, setDestination] = useState<DerectionResult>();
+    const [destination, setDestination] = useState<DirectionResult>();
+    const [stops, setStops] = useState([]);
 
     const [markers, setMarkers] = useState<LatLngLiteral[]>([
             {lat:54.702800971968976, lng: 20.74240559049013},
@@ -28,14 +31,12 @@ export default function Map(){
     type LatLngLiteral = google.maps.LatLngLiteral;    
 
     const {isLoaded} = useLoadScript({
-        googleMapsApiKey: "AIzaSyDwz43Woz_Flwh0o4pg2AEuVQBy1uJBLi8",
+        googleMapsApiKey: process.env.NEXT_PUBLIC_MAP_API_KEY,
         libraries: ["places"],
     });
 
     if(!isLoaded) return <div>Loading...</div>;
     return <MapLocal/>
-
-
 
     function CalcCenter(){
         let lat = (markers[0].lat + markers[1].lat[1]) / markers.length;
@@ -47,7 +48,7 @@ export default function Map(){
 
     //TODO: add transit points / TravelMode.TRANSIT
     
-    async function buildRoute () {
+    async function buildRoute (dest: LatLngLiteral) {
         console.log("before");
 
         //if(!destination) return;
@@ -60,12 +61,17 @@ export default function Map(){
         await dirService.route(
             {
                 origin: markers[1],
-                destination: markers[0],
+                destination: dest,
+                // waypoints: [
+                //     {location: {lat: 57.24047038843604, lng: 37.8380564694735}}
+                // ],
+                waypoints: stops,
                 travelMode: google.maps.TravelMode.DRIVING
             },
             (result, status) => {
                 if(status==="OK" && result){
                     setDestination(result)
+                    console.log(result);
                 }
             }
         )
@@ -74,7 +80,7 @@ export default function Map(){
 
     function addPlace(val){
         setMarkers([...markers, val]);
-        buildRoute();
+        buildRoute(val);
     }
 
     function MapLocal(){
@@ -92,6 +98,7 @@ export default function Map(){
                 mapContainerClassName="map-container"
             >
                 {destination && <DirectionsRenderer directions={destination}/>}
+                {/* {destination && destination.map((item)=><DirectionsRenderer directions={item} />)} */}
                 {markers.map((marker)=><Marker position={marker} />)}
             </GoogleMap>
         </>
