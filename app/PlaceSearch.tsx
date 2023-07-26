@@ -21,8 +21,6 @@ export default function PlaceSearch({handler, setOffice, setOrigin, placeholder}
         clearSuggestions
     } = usePlacesAutocomplete();
 
-
-
     // const handleSelect = async (val: string) => {
     //     setValue(val, false);
     //    // clearSuggestions(); //!!!
@@ -40,15 +38,14 @@ export default function PlaceSearch({handler, setOffice, setOrigin, placeholder}
     //     setOrigin({lat, lng});
     // }
 
-
     const handleSelect = async (val: string) => {
+        let temp = val;
         setValue(val, false);
-       clearSuggestions(); //!!!
+        clearSuggestions(); //!!!
         const result = await getGeocode({address: val});
         const {lat, lng} = await getLatLng(result[0]);
-        handler({lat, lng});
+        handler({lat, lng}, val);
     }
-
 
     return(
         <>

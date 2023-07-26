@@ -7,15 +7,16 @@ import { useState } from 'react';
 
 type TravelMode = google.maps.TravelMode;
 
-export default function BasicSelect() {
-  const [mode, setMode] = useState<TravelMode>();
+export default function BasicSelect({handler}) {
+  const [mode, setMode] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
-    setMode(event.target.value as TravelMode);
+    setMode(event.target.value);
+    handler(event.target.value);
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120 }} width={100} >
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Mode</InputLabel>
         <Select

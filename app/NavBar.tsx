@@ -10,7 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 export default function NavBar(){
     return(
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
           <Toolbar>
             <IconButton
               size="large"
@@ -19,7 +19,7 @@ export default function NavBar(){
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <MenuIcon />
+            <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Travel App

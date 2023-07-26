@@ -56,6 +56,14 @@
         "async": false
       }
     },
+    "(app-client)/./app/Components/Sidebar/Sidebar.tsx": {
+      "*": {
+        "id": "(sc_client)/./app/Components/Sidebar/Sidebar.tsx",
+        "name": "*",
+        "chunks": [],
+        "async": false
+      }
+    },
     "(app-client)/./app/Map.tsx": {
       "*": {
         "id": "(sc_client)/./app/Map.tsx",
@@ -67,6 +75,14 @@
     "(app-client)/./app/NavBar.tsx": {
       "*": {
         "id": "(sc_client)/./app/NavBar.tsx",
+        "name": "*",
+        "chunks": [],
+        "async": false
+      }
+    },
+    "(app-client)/./app/page.tsx": {
+      "*": {
+        "id": "(sc_client)/./app/page.tsx",
         "name": "*",
         "chunks": [],
         "async": false
@@ -235,6 +251,14 @@
       ],
       "async": false
     },
+    "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\Components\\Sidebar\\Sidebar.tsx": {
+      "id": "(app-client)/./app/Components/Sidebar/Sidebar.tsx",
+      "name": "*",
+      "chunks": [
+        "app/page:static/chunks/app/page.js"
+      ],
+      "async": false
+    },
     "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\Map.tsx": {
       "id": "(app-client)/./app/Map.tsx",
       "name": "*",
@@ -245,6 +269,14 @@
     },
     "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\NavBar.tsx": {
       "id": "(app-client)/./app/NavBar.tsx",
+      "name": "*",
+      "chunks": [
+        "app/page:static/chunks/app/page.js"
+      ],
+      "async": false
+    },
+    "C:\\Users\\Kam\\Documents\\frontend\\TravelApp\\app\\page.tsx": {
+      "id": "(app-client)/./app/page.tsx",
       "name": "*",
       "chunks": [
         "app/page:static/chunks/app/page.js"
