@@ -29,8 +29,11 @@ export default function Map({addRoutes}){
             {lat:54.702800971968976, lng: 20.74240559049013},
             {lat:54.66514866433478, lng:21.81557985296381}]
             );
-    const[mode, setMode] = useState("DRIVING");
+    const[mode, setMode] = useState<string>("DRIVING");
     const[interRes, setInterRes] = useState({});
+    const[flights, setFlights] = useState<[]>([]);
+
+    //отдельный стейт с объектом original, dest, name, LatLng
 
     useEffect(()=>{
         buildRoute(destinationPoint);
@@ -78,38 +81,31 @@ export default function Map({addRoutes}){
     //TODO: add transit points / TravelMode.TRANSIT
     
     async function buildRoute (dest: LatLngLiteral) {
-        console.log("before");
 
         if(!origin) return;
         
-        console.log("after");
         const dirService = new google.maps.DirectionsService();
-
-        const flightPath = new google.maps.Polyline({
-            path: markers,
-            geodesic: true,
-            strokeColor: "#FF0000",
-            strokeOpacity: 1.0,
-            strokeWeight: 2,
-        }) 
-
         
-        
-        await dirService.route(
-            {
-                origin: originPoint,
-                destination: dest,
-                waypoints: stops,
-                travelMode: mode
-            },
-            (result, status) => {
-                if(status==="OK" && result){
-                    setDestination(result);
-                    //addRoutes(result.geocoded_waypoints);
-                    console.log(result);
+        if(mode=="FLIGHT"){
+            setFlights([...flights, [originPoint, dest]]);
+        }
+        else{
+            await dirService.route(
+                {
+                    origin: originPoint,
+                    destination: dest,
+                    waypoints: stops,
+                    travelMode: mode
+                },
+                (result, status) => {
+                    if(status==="OK" && result){
+                        setDestination(result);
+                        //addRoutes(result.geocoded_waypoints);
+                        console.log(result);
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     function buildFlight(){
@@ -118,10 +114,6 @@ export default function Map({addRoutes}){
 
     function addPlace(val, locationName){
         setInterRes({...interRes, destination: locationName});
-        // if(Object.keys(interRes).length == 2){
-        //     handleRoute(interRes);
-        //     setInterRes({});
-        // } 
         setMarkers([...markers, val]);
         setDestinationPoint(val);
         buildRoute(val);
@@ -129,10 +121,6 @@ export default function Map({addRoutes}){
 
     function addOrigin(val, locationName){
         setInterRes({...interRes, start: locationName});
-        // if(Object.keys(interRes).length == 2){
-        //     handleRoute(interRes);
-        //     setInterRes({});
-        // } 
         setMarkers([...markers, val]);
         setOriginPoint(val);
     }
@@ -152,10 +140,6 @@ export default function Map({addRoutes}){
         addRoutes(val);
     }  
 
-    function handleInterRes(){
-        //if(Object.keys(interRes).length > 0) setInterRes()
-    }
-
     function FlightIcon(){
         return(
             <Icon />
@@ -166,16 +150,11 @@ export default function Map({addRoutes}){
         return (
         <>
             <div>
-                {/* <PlaceSearch addPlace={addPlace} setOrigin={addOrigin} setOffice={(position)=>{
-                    setOffice(position);
-                    mapRef.current?.panTo(position);
-                }}/> */}
 
                 <Box display={"flex"} flexDirection={"row"} alignItems={"center"} /*sx={{width:500}}*/>
                     <PlaceSearch placeholder="Starting point" handler={addOrigin} setOrigin={addOrigin} setOffice={(position)=>{
                         setOffice(position);
                         mapRef.current?.panTo(position);
-                        
                     }}/>
                     <PlaceSearch placeholder="Destination point" handler={addPlace} setOrigin={addOrigin} setOffice={(position)=>{
                         setOffice(position);
@@ -201,9 +180,10 @@ export default function Map({addRoutes}){
                 {/* {destination && destination.map((item)=><DirectionsRenderer directions={item} />)} */}
                 {markers.map((marker)=><Marker position={marker} />)}
 
-                <Polyline
-                    path={markers}            
-                    options={{
+                {flights.map((flight)=>
+                    <Polyline
+                        path={flight}            
+                        options={{
                         strokeColor: "#ff2527",
                         strokeOpacity: 0.75,
                         strokeWeight: 5,
@@ -215,7 +195,8 @@ export default function Map({addRoutes}){
                             }
                         ]
                     }}
-                />
+                    />        
+                )}
             </GoogleMap>
         </>
         )

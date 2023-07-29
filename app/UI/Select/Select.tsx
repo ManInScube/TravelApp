@@ -30,6 +30,7 @@ export default function BasicSelect({handler}) {
           <MenuItem value={"TRANSIT"}>Transit</MenuItem>
           <MenuItem value={"WALKING"}>Walking</MenuItem>
           <MenuItem value={"BICYCLING"}>Bicycling</MenuItem>
+          <MenuItem value={"FLIGHT"}>Flight</MenuItem>
         </Select>
       </FormControl>
     </Box>
