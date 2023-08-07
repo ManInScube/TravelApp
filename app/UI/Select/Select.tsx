@@ -11,6 +11,7 @@ export default function BasicSelect({handler}) {
   const [mode, setMode] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
+    event.preventDefault();
     setMode(event.target.value);
     handler(event.target.value);
   };

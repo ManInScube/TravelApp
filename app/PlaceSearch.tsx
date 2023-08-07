@@ -49,35 +49,6 @@ export default function PlaceSearch({handler, setOffice, setOrigin, placeholder}
 
     return(
         <>
-            {/* <Combobox onSelect={handleOrigin}>
-                <ComboboxInput value={value}
-                onChange={e=>setValue(e.target.value)}
-                disabled={!ready}/>
-                <ComboboxPopover>
-                    <ComboboxList>
-                        {status==="OK" && 
-                            data.map(({place_id, description})=>(
-                                <ComboboxOption key={place_id} value={description}/>
-                            ))
-                        }
-                    </ComboboxList>
-                </ComboboxPopover>
-            </Combobox>
-
-            <Combobox onSelect={handleSelect}>
-                <ComboboxInput value={value}
-                onChange={e=>setValue(e.target.value)}
-                disabled={!ready}/>
-                <ComboboxPopover>
-                    <ComboboxList>
-                        {status==="OK" && 
-                            data.map(({place_id, description})=>(
-                                <ComboboxOption key={place_id} value={description}/>
-                            ))
-                        }
-                    </ComboboxList>
-                </ComboboxPopover>
-            </Combobox> */}
 
             <Combobox onSelect={handleSelect}>
                 <ComboboxInput value={value}
@@ -96,7 +67,6 @@ export default function PlaceSearch({handler, setOffice, setOrigin, placeholder}
                     </ComboboxList>
                 </ComboboxPopover>
             </Combobox>
-
 
         </>
     )

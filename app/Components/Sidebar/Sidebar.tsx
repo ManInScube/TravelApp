@@ -12,12 +12,16 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import RouteCard from '../RouteCard/RouteCard';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { locationSlice } from '../../store/reducers/locationSliсe';
 
 const drawerWidth = 300;
 
 
-export default function Sidebar({routes}){
+export default function Sidebar({routes, handler}){
 
+  const locs = useAppSelector(state=>state.locationReducer);
+  
     return(
       <Drawer
         variant="permanent"
@@ -43,16 +47,8 @@ export default function Sidebar({routes}){
           </List>
           <Divider />
           <List>
-            {routes && routes.map((location, index) => (
-              // <ListItem key={text} disablePadding>
-              //   <ListItemButton>
-              //     <ListItemIcon>
-              //       {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              //     </ListItemIcon>
-              //     <ListItemText primary={text} />
-              //   </ListItemButton>
-              // </ListItem>
-              <RouteCard start={location.start} destination={location.destination}/>
+            {locs && locs.map((loc, index) => (
+              <RouteCard start={loc.name} handler={handler} id={index}/>
             ))}
           </List>
         </Box>

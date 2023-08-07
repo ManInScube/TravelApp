@@ -7,6 +7,9 @@ import PlaceSearch from "./PlaceSearch";
 import { Box, Icon, Input } from "@mui/material";
 import BasicSelect from "./UI/Select/Select";
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { locationSlice } from "./store/reducers/locationSliсe";
+import ILocation from "./store/reducers/locationSliсe";
 
 
 type LatLngLiteral = google.maps.LatLngLiteral;    
@@ -33,6 +36,10 @@ export default function Map({addRoutes}){
     const[interRes, setInterRes] = useState({});
     const[flights, setFlights] = useState<[]>([]);
 
+    const locs = useAppSelector(state=>state.locationReducer);
+    const {addOriginal} = locationSlice.actions;
+    const dispatch = useAppDispatch();
+
     //отдельный стейт с объектом original, dest, name, LatLng
 
     useEffect(()=>{
@@ -41,6 +48,7 @@ export default function Map({addRoutes}){
 
     useEffect(()=>{
         if(Object.keys(interRes).length == 2){
+            setInterRes({...interRes, id: Date.now()});
             handleRoute(interRes);
             setInterRes({});
         } 
@@ -120,9 +128,17 @@ export default function Map({addRoutes}){
     }
 
     function addOrigin(val, locationName){
-        setInterRes({...interRes, start: locationName});
-        setMarkers([...markers, val]);
-        setOriginPoint(val);
+        console.table([val,locationName]);
+        const newLocation = {
+            id: 1,
+            name: locationName,
+            coordinates: val
+        }
+        dispatch(addOriginal(newLocation));
+        // setInterRes({...interRes, start: locationName});
+        // setMarkers([...markers, val]);
+        // setOriginPoint(val);
+        console.log(locs);
     }
 
     function addStop(val){
@@ -154,15 +170,15 @@ export default function Map({addRoutes}){
                 <Box display={"flex"} flexDirection={"row"} alignItems={"center"} /*sx={{width:500}}*/>
                     <PlaceSearch placeholder="Starting point" handler={addOrigin} setOrigin={addOrigin} setOffice={(position)=>{
                         setOffice(position);
-                        mapRef.current?.panTo(position);
+                        // mapRef.current?.panTo(position);
                     }}/>
                     <PlaceSearch placeholder="Destination point" handler={addPlace} setOrigin={addOrigin} setOffice={(position)=>{
                         setOffice(position);
-                        mapRef.current?.panTo(position);
+                       // mapRef.current?.panTo(position);
                     }}/>
                     <PlaceSearch placeholder="Transit points" handler={addStop} setOrigin={addOrigin} setOffice={(position)=>{
                         setOffice(position);
-                        mapRef.current?.panTo(position);
+                       // mapRef.current?.panTo(position);
                     }}/>
 
                     <BasicSelect handler={addMode}/>
