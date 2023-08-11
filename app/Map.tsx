@@ -9,6 +9,8 @@ import BasicSelect from "./UI/Select/Select";
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { locationSlice } from "./store/reducers/locationSliсe";
+import { routesSlice } from "./store/reducers/routesSlice";
+
 import ILocation from "./store/reducers/locationSliсe";
 
 
@@ -26,34 +28,24 @@ export default function Map({addRoutes}){
     const [office, setOffice] = useState<LatLngLiteral>();
     const [originPoint, setOriginPoint] = useState<LatLngLiteral>({lat:0,lng:0});
     const [destinationPoint, setDestinationPoint] = useState<LatLngLiteral>({lat:0,lng:0});
-    const [destination, setDestination] = useState<DirectionResult>();
     const [stops, setStops] = useState<DirectionWaypoint[]>([]);
     const [markers, setMarkers] = useState<LatLngLiteral[]>([
             {lat:54.702800971968976, lng: 20.74240559049013},
             {lat:54.66514866433478, lng:21.81557985296381}]
             );
     const[mode, setMode] = useState<string>("DRIVING");
-    const[interRes, setInterRes] = useState({});
     const[flights, setFlights] = useState<[]>([]);
 
     const locs = useAppSelector(state=>state.locationReducer);
     const {addOriginal} = locationSlice.actions;
+    const routes = useAppSelector(state=>state.routeReducer);
+    const {addRoute} = routesSlice.actions;
     const dispatch = useAppDispatch();
-
-    //отдельный стейт с объектом original, dest, name, LatLng
 
     useEffect(()=>{
         buildRoute(destinationPoint);
     },[stops, mode]);
 
-    useEffect(()=>{
-        if(Object.keys(interRes).length == 2){
-            setInterRes({...interRes, id: Date.now()});
-            handleRoute(interRes);
-            setInterRes({});
-        } 
-    },[interRes]);
-    
     const mapRef = useRef<GoogleMap>();
 
     const center = useMemo<LatLngLiteral>(
@@ -70,7 +62,6 @@ export default function Map({addRoutes}){
       );
 
     const onLoad = useCallback((map)=>(mapRef.current=map),[]);
-
 
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAP_API_KEY,
@@ -107,21 +98,15 @@ export default function Map({addRoutes}){
                 },
                 (result, status) => {
                     if(status==="OK" && result){
-                        setDestination(result);
-                        //addRoutes(result.geocoded_waypoints);
-                        console.log(result);
+                        dispatch(addRoute(result));
+                        console.log(routes);
                     }
                 }
             )
         }
     }
 
-    function buildFlight(){
-        //Polyline drowing
-    }
-
     function addPlace(val, locationName){
-        setInterRes({...interRes, destination: locationName});
         setMarkers([...markers, val]);
         setDestinationPoint(val);
         buildRoute(val);
@@ -135,9 +120,10 @@ export default function Map({addRoutes}){
             coordinates: val
         }
         dispatch(addOriginal(newLocation));
-        // setInterRes({...interRes, start: locationName});
-        // setMarkers([...markers, val]);
-        // setOriginPoint(val);
+        //////////
+        setMarkers([...markers, val]);
+        setOriginPoint(val);
+        ///////////
         console.log(locs);
     }
 
@@ -192,9 +178,9 @@ export default function Map({addRoutes}){
                 options={options}
                 onLoad={onLoad}
             >
-                {destination && <DirectionsRenderer directions={destination}/>}
+                {routes && <DirectionsRenderer directions={routes.result}/>}
                 {/* {destination && destination.map((item)=><DirectionsRenderer directions={item} />)} */}
-                {markers.map((marker)=><Marker position={marker} />)}
+                {/* {locs.map((loc)=><Marker position={loc.coordinates} />)} */}
 
                 {flights.map((flight)=>
                     <Polyline

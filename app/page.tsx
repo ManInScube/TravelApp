@@ -13,8 +13,6 @@ const store = setupStore();
 export default function Page() {
 
     const [routes, setRoutes] = useState<any[]>([]);
-
-
     
     function handleRoutes (val){
       setRoutes([...routes, val]);
